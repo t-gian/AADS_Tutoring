@@ -1,9 +1,9 @@
 #include <stdio.h>
 #include <stdlib.h>
 
-int isCorrect(int vertex, int **matrix, int *colors, int selected_color, int n) {
+int isCorrect(int vertex, int **matrix, int *colors, int color, int n) {
     for (int i = 0; i < n; i++) {
-        if (matrix[vertex][i] && colors[i] == selected_color) {
+        if (matrix[vertex][i] && colors[i] == color) {
             return 0;
         }
     }
@@ -15,9 +15,9 @@ int generate_color(int vertex, int **matrix, int *colors, int numColors, int n) 
         return 1;
     }
 
-    for (int selected_color = 1; selected_color <= numColors; selected_color++) {
-        if (isCorrect(vertex, matrix, colors, selected_color, n)) {
-            colors[vertex] = selected_color;
+    for (int color = 1; color <= numColors; color++) {
+        if (isCorrect(vertex, matrix, colors, color, n)) {
+            colors[vertex] = color;
 
             if (generate_color(vertex + 1, matrix, colors, numColors, n)) {
                 return 1;
