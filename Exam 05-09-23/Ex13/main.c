@@ -1,25 +1,25 @@
 #include <stdio.h>
 #include <stdlib.h>
 
-int isCorrect(int vertex, int **graph, int *colors, int color, int n) {
+int isCorrect(int vertex, int **matrix, int *colors, int selected_color, int n) {
     for (int i = 0; i < n; i++) {
-        if (graph[vertex][i] && colors[i] == color) {
+        if (matrix[vertex][i] && colors[i] == selected_color) {
             return 0;
         }
     }
     return 1;
 }
 
-int generate_color(int vertex, int **graph, int *colors, int m, int n) {
+int generate_color(int vertex, int **matrix, int *colors, int numColors, int n) {
     if (vertex == n) {
         return 1;
     }
 
-    for (int color = 1; color <= m; color++) {
-        if (isCorrect(vertex, graph, colors, color, n)) {
-            colors[vertex] = color;
+    for (int selected_color = 1; selected_color <= numColors; selected_color++) {
+        if (isCorrect(vertex, matrix, colors, selected_color, n)) {
+            colors[vertex] = selected_color;
 
-            if (generate_color(vertex + 1, graph, colors, m, n)) {
+            if (generate_color(vertex + 1, matrix, colors, numColors, n)) {
                 return 1;
             }
 
@@ -30,14 +30,14 @@ int generate_color(int vertex, int **graph, int *colors, int m, int n) {
     return 0;
 }
 
-void color(int **graph, int n) {
+void color(int **matrix, int n) {
     int *colors = (int*)malloc(n * sizeof(int));
     for (int i = 0; i < n; i++) {
         colors[i] = 0;
     }
     int numColors = 1;
 
-    while (!generate_color(0, graph, colors, numColors, n)) {
+    while (!generate_color(0, matrix, colors, numColors, n)) {
         numColors++;
     }
 
@@ -49,7 +49,7 @@ void color(int **graph, int n) {
     free(colors);
 }
 
-int** readAdjacencyMatrixFromFile(const char* filename, int* n) {
+int** readAdjacencyMatrixFromFile(char* filename, int* n) {
     FILE* fin = fopen(filename, "r");
     if (fin == NULL) {
         printf("Error opening file.\n");
@@ -70,7 +70,7 @@ int** readAdjacencyMatrixFromFile(const char* filename, int* n) {
 }
 
 int main() {
-    const char* filename = "adjmatrix.txt";
+    char* filename = "adjmatrix.txt";
     int n = 0;
     int** matrix = readAdjacencyMatrixFromFile(filename, &n);
     if (matrix == NULL) {
