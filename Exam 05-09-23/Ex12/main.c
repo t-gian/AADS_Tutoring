@@ -78,7 +78,6 @@ void print_list(list_t1* head) {
     }
 }
 
-// requested function, most of other functions were built just to perform a test
 void transpose(list_t1* head1, list_t1** head2) {
     list_t1* temp1 = head1;
     while (temp1 != NULL) {
